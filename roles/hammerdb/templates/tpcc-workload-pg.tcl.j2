@@ -60,7 +60,12 @@ set samples {{workload_args.samples}}
 # So we are increasing the number of workers in the outer loop while
 # we run the samples in the inner loop
 
+{% if workload_args.scaleup_workers.lower() == "true" %}
 for {set w 1} { $w <= $workers } { set w [expr {$w*2}] } {
+{% else %}
+for {set w $workers} { $w <= $workers } { set w [expr {$w*2}] } {
+{% endif %}
+
 puts "$w VU TEST"
 for {set i 1} {$i <= $samples} {incr i} {
         puts "============ RUNNING SAMPLE $i: $w WORKERS ============"
